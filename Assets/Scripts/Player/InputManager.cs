@@ -1,17 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
     private PlayerControls playerControls;
+    private AnimatorManager animatorManager;
 
     [SerializeField] private Vector2 movementInput;
+    [SerializeField] private float moveAmount;
     
     public float verticalInput;
     public float horizontalInput;
-    
+
+    private void Awake()
+    {
+        animatorManager = GetComponent<AnimatorManager>();
+    }
+
     private void OnEnable()
     {
         if (playerControls == null)
@@ -40,5 +48,9 @@ public class InputManager : MonoBehaviour
     {
         verticalInput = movementInput.y;
         horizontalInput = movementInput.x;
+        
+        moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
+        
+        animatorManager.UpdateAnimatorValues(0, moveAmount);
     }
 }
