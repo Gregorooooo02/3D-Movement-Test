@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    InputManager inputManager;
+    private InputManager inputManager;
+    private PlayerLocomotion playerLocomotion;
     
     public Transform targetTransform;       // The object that the camera will follow
     public Transform cameraPivot;           // The object that the camera will pivot (up and down)
@@ -32,6 +33,7 @@ public class CameraManager : MonoBehaviour
     {
         inputManager = FindObjectOfType<InputManager>();
         targetTransform = FindObjectOfType<PlayerManager>().transform;
+        playerLocomotion = FindObjectOfType<PlayerLocomotion>();
         cameraTransform = Camera.main.transform;
         defaultPosition = cameraTransform.localPosition.z;
     }
@@ -45,6 +47,16 @@ public class CameraManager : MonoBehaviour
 
     private void FollowTarget()
     {
+        if (playerLocomotion.isSprinting)
+        {
+            cameraFollowSpeed = 0.02f;
+        }
+        else
+        {
+            cameraFollowSpeed = 0.04f;
+        }
+        
+        
         Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransform.position, 
                                                         ref cameraFollowVelocity, cameraFollowSpeed);
         transform.position = targetPosition;

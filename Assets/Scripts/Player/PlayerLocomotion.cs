@@ -23,6 +23,7 @@ public class PlayerLocomotion : MonoBehaviour
         inputManager = GetComponent<InputManager>();
         playerRigidbody = GetComponent<Rigidbody>();
         cameraObject = Camera.main.transform;
+        isSprinting = false;
     }
     
     public void HandleAllMovement()
